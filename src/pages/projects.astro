@@ -1,0 +1,23 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { SITE_TITLE } from '../consts';
+import { projects } from '../data/projects';
+---
+<SiteLayout title={`Projects · ${SITE_TITLE}`} description="Madderate 的开源项目与开发作品。">
+  <section class="page-heading">
+    <p class="eyebrow">SELECTED WORK / OPEN SOURCE</p>
+    <h1>Projects<span class="accent-dot">.</span></h1>
+    <p>一些正在构建、维护，或值得留存的项目。</p>
+  </section>
+  <ul class="project-list">
+    {projects.map((project) => (
+      <li class="project-item">
+        <a href={project.url} target="_blank" rel="noopener noreferrer" class="project-link">
+          <span class="project-name">{project.name}<span class="external-mark" aria-hidden="true"> ↗</span></span>
+          <span class="project-description">{project.description}</span>
+          <span class="project-tags">{project.tags.join(' · ')}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</SiteLayout>

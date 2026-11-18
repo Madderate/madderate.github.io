@@ -1,59 +1,50 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
----
+import { getCollection } from 'astro:content';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PostList from '../components/PostList.astro';
+import { projects } from '../data/projects';
+import { GITHUB_URL, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to
-				build a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your{' '}
-				<code>astro.config.mjs</code> file. You can customize your setup with{' '}
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like
-				Tailwind, React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>
-					Edit this page in <code>src/pages/index.astro</code>
-				</li>
-				<li>
-					Edit the site header items in <code>src/components/Header.astro</code>
-				</li>
-				<li>
-					Add your name to the footer in <code>src/components/Footer.astro</code>
-				</li>
-				<li>
-					Check out the included blog posts in <code>src/content/blog/</code>
-				</li>
-				<li>
-					Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code>
-				</li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to{' '}
-				<a href="https://docs.astro.build/">read the docs</a> or{' '}
-				<a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out{' '}
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a> by{' '}
-				<a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+const recentPosts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
+const featuredProjects = projects.filter((project) => project.featured);
+---
+<SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <section class="intro-section" aria-labelledby="intro-title">
+    <p class="eyebrow">PERSONAL SPACE / SOFTWARE & NOTES</p>
+    <h1 id="intro-title">Hi, I'm Madderate<span class="accent-dot">.</span></h1>
+    <p class="intro-lead">开发软件，记录思考，保持好奇。</p>
+    <p class="intro-copy">这里是我的个人主页。我会分享正在构建的项目、技术实践，以及值得记录的想法。</p>
+    <div class="intro-links">
+      <a class="text-link" href="/about/">了解更多 <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <section class="home-section" aria-labelledby="projects-title">
+    <div class="section-heading">
+      <h2 id="projects-title">Selected Projects</h2>
+      <a href="/projects/">全部项目 ↗</a>
+    </div>
+    <ul class="project-list">
+      {featuredProjects.map((project) => (
+        <li class="project-item">
+          <a href={project.url} target="_blank" rel="noopener noreferrer" class="project-link">
+            <span class="project-name">{project.name}<span class="external-mark" aria-hidden="true"> ↗</span></span>
+            <span class="project-description">{project.description}</span>
+            <span class="project-tags">{project.tags.join(' · ')}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="home-section" aria-labelledby="writing-title">
+    <div class="section-heading">
+      <h2 id="writing-title">Recent Writing</h2>
+      <a href="/blog/">所有文章 ↗</a>
+    </div>
+    {recentPosts.length > 0 ? <PostList posts={recentPosts} /> : <p class="empty-state">文章正在准备中。</p>}
+  </section>
+</SiteLayout>
