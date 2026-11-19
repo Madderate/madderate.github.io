@@ -1,21 +1,31 @@
 ---
 import { GITHUB_URL, SITE_TITLE } from '../consts';
 
+interface Link {
+  href: string,
+  path: string,
+  label: string,
+}
+
 const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const links = [
+const blog: Link = { href: '/blog/', path: '/blog', label: 'Blog' };
+const links: Link[] = [
   { href: '/', path: '/', label: 'Home' },
   { href: '/projects/', path: '/projects', label: 'Projects' },
-  { href: '/blog/', path: '/blog', label: 'Blog' },
+  blog,
   { href: '/about/', path: '/about', label: 'About' },
 ];
+
+const isActive = (path: string) => pathname === path || (path !== '/' && pathname.startsWith(`${path}/`));
+const isBlogActive = ({href, path}: Link) => pathname === path || pathname.startsWith(href);
 ---
 <header class="site-header">
   <div class="container header-inner">
     <a class="site-brand" href="/" aria-label={`${SITE_TITLE} 首页`}>{SITE_TITLE}<span aria-hidden="true">.</span></a>
     <nav aria-label="主导航" class="header-nav">
       {links.map((link) => {
-        const active = pathname === link.path || (link.path !== '/' && pathname.startsWith(`${link.path}/`));
-        return <a href={link.href} class:list={['nav-link', { 'is-active': active }]} aria-current={active ? 'page' : undefined}>{link.label}</a>;
+          const active = link === blog ? isBlogActive(link) : isActive(link.path);
+          return <a href={link.href} class:list={['nav-link', { 'is-active': active }]} aria-current={active ? 'page' : undefined}>{link.label}</a>;
       })}
     </nav>
     <div class="header-actions">
@@ -31,10 +41,10 @@ const links = [
     const current = html.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     const next = current === 'dark' ? 'light' : 'dark';
     html.dataset.theme = next;
-    try {
-      localStorage.setItem('theme', next);
-    } catch {
-      // 无法使用本地存储时，仍然允许本次切换。
+    try { 
+      localStorage.setItem('theme', next); 
+    } catch { 
+      // 保留本次主题切换。无法使用本地存储时，仍然允许本次切换。
     }
   });
 </script>

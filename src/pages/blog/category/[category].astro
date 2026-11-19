@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BlogCategoryTabs from '../../../components/BlogCategoryTabs.astro';
+import PostList from '../../../components/PostList.astro';
+import { SITE_TITLE } from '../../../consts';
+import { BLOG_CATEGORIES, type BlogCategory } from '../../../data/blogCategories';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+
+interface Props {
+  category: BlogCategory;
+  label: string;
+  description: string;
+}
+
+export const getStaticPaths = (() =>
+  BLOG_CATEGORIES.map(({ slug, label, description }) => ({
+    params: { category: slug },
+    props: { category: slug, label, description },
+  }))
+) satisfies GetStaticPaths;
+
+const { category, label, description } = Astro.props;
+const posts = (await getCollection('blog', ({ data }) => data.category === category)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+<SiteLayout title={`${label} · ${SITE_TITLE}`} description={description}>
+  <section class="page-heading blog-page-heading">
+    <p class="eyebrow">BLOG / CATEGORY</p>
+    <h1>{label}<span class="accent-dot">.</span></h1>
+    <p>{description}</p>
+  </section>
+  <BlogCategoryTabs />
+  {posts.length > 0
+    ? <PostList posts={posts} />
+    : <p class="empty-state">这个分类暂时没有文章。<a href="/blog/">查看全部文章 →</a></p>}
+</SiteLayout>

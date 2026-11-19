@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import BlogCategoryTabs from '../../components/BlogCategoryTabs.astro';
 import PostList from '../../components/PostList.astro';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import { SITE_TITLE } from '../../consts';
@@ -9,10 +10,11 @@ const posts = (await getCollection('blog')).sort(
 );
 ---
 <SiteLayout title={`Blog · ${SITE_TITLE}`} description="技术文章、开发笔记与日常思考。">
-  <section class="page-heading">
+  <section class="page-heading blog-page-heading">
     <p class="eyebrow">THOUGHTS / NOTES / WRITING</p>
     <h1>Blog<span class="accent-dot">.</span></h1>
     <p>写下踩过的坑、学到的东西，以及还没想明白的问题。</p>
   </section>
+  <BlogCategoryTabs />
   {posts.length > 0 ? <PostList posts={posts} /> : <p class="empty-state">这里暂时没有文章。</p>}
 </SiteLayout>

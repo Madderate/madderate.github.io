@@ -161,3 +161,73 @@ p { margin-top: 0; }
   .back-link { margin-bottom: 30px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Blog navigation: unobtrusive dropdown + secondary tabs */
+.site-header { position: relative; z-index: 20; }
+.nav-dropdown { position: relative; }
+.nav-dropdown > summary {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.nav-dropdown > summary::-webkit-details-marker { display: none; }
+.nav-dropdown > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.dropdown-chevron { font-size: 15px; transition: transform .15s ease; }
+.nav-dropdown[open] .dropdown-chevron { transform: rotate(180deg); }
+.nav-submenu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 176px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.09);
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  z-index: 30;
+}
+.nav-submenu a {
+  display: block;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 5px;
+}
+.nav-submenu a:hover, .nav-submenu a[aria-current='page'] {
+  color: var(--text);
+  background: var(--surface);
+}
+.blog-page-heading { border-bottom: 0; margin-bottom: 0; padding-bottom: 22px; }
+.blog-categories {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 18px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.category-tab {
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+  padding: 10px 0 12px;
+  border-bottom: 2px solid transparent;
+}
+.category-tab:hover { color: var(--text); }
+.category-tab.is-active { color: var(--text); font-weight: 650; border-bottom-color: var(--accent); }
+.post-category { color: var(--soft); font-size: 12px; }
+.article-category {
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 4px;
+}
+.article-category:hover { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) {
+  .dropdown-chevron { transition: none; }
+}

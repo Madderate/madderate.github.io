@@ -1,0 +1,24 @@
+---
+import { BLOG_CATEGORIES } from '../data/blogCategories';
+
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const tabs = [
+  { href: '/blog/', path: '/blog', label: '全部文章' },
+  ...BLOG_CATEGORIES.map(({ slug, label }) => ({
+    href: `/blog/category/${slug}/`,
+    path: `/blog/category/${slug}`,
+    label,
+  })),
+];
+---
+<nav class="blog-categories" aria-label="博客分类">
+  {tabs.map((tab) => (
+    <a
+      class:list={['category-tab', { 'is-active': pathname === tab.path }]}
+      href={tab.href}
+      aria-current={pathname === tab.path ? 'page' : undefined}
+    >
+      {tab.label}
+    </a>
+  ))}
+</nav>
