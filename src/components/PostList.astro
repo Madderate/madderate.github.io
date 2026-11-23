@@ -6,13 +6,15 @@ import { getBlogCategory } from '../data/blogCategories';
 interface Props {
   posts: CollectionEntry<'blog'>[];
   showCategory: boolean;
+  variant: 'home' | 'archive';
 }
 const {
    posts,
    showCategory = true,
+   variant = 'archive',
 } = Astro.props;
 ---
-<ul class="post-list">
+<ul class:list={['post-list', `post-list--${variant}`]}>
   {posts.map((post) => (
     <li class="post-item">
       <a class="post-link" href={`/blog/${post.id}/`}>

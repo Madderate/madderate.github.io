@@ -340,6 +340,37 @@ p {
   padding: 0;
 }
 
+/* 只在相邻条目之间绘制分隔线 */
+.post-list>.post-item+.post-item,
+.project-list>.project-item+.project-item {
+  border-top: 1px solid var(--line);
+}
+
+/* 首页的项目列表需要添加顶部分割线 */
+.project-list--home {
+  border-top: 1px solid var(--line);
+}
+
+/* 首页：提供顶部边框 */
+.post-list--home {
+  border-top: 1px solid var(--line);
+}
+
+/* Blog 页面：不提供额外边框 */
+.post-list--archive {
+  border: none;
+}
+
+/* 首页文章间距 */
+.post-list--home .post-link {
+  padding: 16px 0;
+}
+
+/* Blog 归档文章间距 */
+.post-list--archive .post-link {
+  padding: 19px 0;
+}
+
 .post-item,
 .project-item {
   border-bottom: 1px solid var(--line);
@@ -739,7 +770,7 @@ p {
   display: flex;
   gap: 24px;
   border-bottom: 1px solid var(--line);
-  margin-bottom: 18px;
+  margin-bottom: 8px;
   overflow-x: auto;
   white-space: nowrap;
 }
