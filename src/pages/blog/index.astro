@@ -16,5 +16,5 @@ const posts = (await getCollection('blog')).sort(
     <p>写下踩过的坑、学到的东西，以及还没想明白的问题。</p>
   </section>
   <BlogCategoryTabs />
-  {posts.length > 0 ? <PostList posts={posts} /> : <p class="empty-state">这里暂时没有文章。</p>}
+  {posts.length > 0 ? <PostList posts={posts} showCategory={true} /> : <p class="empty-state">这里暂时没有文章。</p>}
 </SiteLayout>

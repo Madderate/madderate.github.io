@@ -33,6 +33,6 @@ const posts = (await getCollection('blog', ({ data }) => data.category === categ
   </section>
   <BlogCategoryTabs />
   {posts.length > 0
-    ? <PostList posts={posts} />
+    ? <PostList posts={posts} showCategory={false} />
     : <p class="empty-state">这个分类暂时没有文章。<a href="/blog/">查看全部文章 →</a></p>}
 </SiteLayout>

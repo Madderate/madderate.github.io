@@ -5,8 +5,12 @@ import { getBlogCategory } from '../data/blogCategories';
 
 interface Props {
   posts: CollectionEntry<'blog'>[];
+  showCategory: boolean;
 }
-const { posts } = Astro.props;
+const {
+   posts,
+   showCategory = true,
+} = Astro.props;
 ---
 <ul class="post-list">
   {posts.map((post) => (
@@ -15,7 +19,7 @@ const { posts } = Astro.props;
         <span class="post-title-group">
           <span class="post-title">{post.data.title}</span>
           <span class="post-description">{post.data.description}</span>
-          {post.data.category && <span class="post-category">{getBlogCategory(post.data.category)?.label}</span>}
+          {showCategory && post.data.category && <span class="post-category">{getBlogCategory(post.data.category)?.label}</span>}
         </span>
         <span class="post-date"><FormattedDate date={post.data.pubDate} /></span>
       </a>

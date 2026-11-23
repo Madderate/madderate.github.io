@@ -45,6 +45,6 @@ const featuredProjects = projects.filter((project) => project.featured);
       <h2 id="writing-title">Recent Writing</h2>
       <a href="/blog/">所有文章 ↗</a>
     </div>
-    {recentPosts.length > 0 ? <PostList posts={recentPosts} /> : <p class="empty-state">文章正在准备中。</p>}
+    {recentPosts.length > 0 ? <PostList posts={recentPosts} showCategory={true} /> : <p class="empty-state">文章正在准备中。</p>}
   </section>
 </SiteLayout>
