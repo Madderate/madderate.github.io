@@ -7,7 +7,15 @@ import { SITE_TITLE } from '../consts';
 import { getBlogCategory } from '../data/blogCategories';
 
 type Props = CollectionEntry<'blog'>['data'];
-const { title, description, pubDate, updatedDate, heroImage, category } = Astro.props;
+const { 
+  title, 
+  description, 
+  pubDate, 
+  updatedDate, 
+  heroImage, 
+  category,
+  tags = [],
+} = Astro.props;
 const categoryInfo = getBlogCategory(category);
 ---
 <SiteLayout title={`${title} · ${SITE_TITLE}`} description={description} image={heroImage}>
@@ -22,6 +30,15 @@ const categoryInfo = getBlogCategory(category);
         {categoryInfo && <a class="article-category" href={`/blog/category/${categoryInfo.slug}/`}>{categoryInfo.label}</a>}
         {updatedDate && <span>· 更新于 <FormattedDate date={updatedDate} /></span>}
       </div>
+      {tags.length > 0 && (<div class="article-tags" aria-label="文章标签">{tags.map(
+        (tag) => (
+          <span class="article-tag">
+          <span aria-hidden="true">#</span>
+          {tag}
+          </span>
+        ))}
+      </div>
+      )}
     </header>
     {heroImage && (
       <div class="article-hero">

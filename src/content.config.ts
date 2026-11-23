@@ -18,6 +18,7 @@ const blog = defineCollection({
       heroImage: z.optional(image()),
       // 不填写分类的旧文章仍然可正常构建，并保留在“全部文章”中。
       category: z.enum(categorySlugs).optional(),
+      tags: z.array(z.string()).default([]),
     }),
 });
 
